@@ -358,8 +358,8 @@
 						data.sharedPath
 					rootDirSpan.textContent = `📁 Sharing: ${data.sharedPath}`
 
-					linkAnchor.textContent = `https://${window.location.hostname}:${data.port}`
-					linkAnchor.href = `https://${window.location.hostname}:${data.port}`
+					linkAnchor.textContent = `http://${window.location.hostname}:${data.port}`
+					linkAnchor.href = `http://${window.location.hostname}:${data.port}`
 
 					updateStatusUI(data.active)
 				} catch (err) {

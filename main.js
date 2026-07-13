@@ -5,8 +5,6 @@ const { stopAllServers } = require('./index.js')
 
 let mainWindow
 
-app.commandLine.appendSwitch('ignore-certificate-errors')
-
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 1000,
@@ -21,7 +19,7 @@ function createWindow() {
 		},
 	})
 
-	const targetUrl = 'https://localhost:8443'
+	const targetUrl = 'http://localhost:8443'
 
 	function loadDashboard() {
 		mainWindow.loadURL(targetUrl).catch((err) => {
@@ -52,21 +50,6 @@ ipcMain.handle('dialog:openDirectory', async () => {
 	}
 	return null
 })
-
-app.on(
-	'certificate-error',
-	(event, webContents, url, error, certificate, callback) => {
-		if (
-			url.startsWith('https://localhost:8443') ||
-			url.startsWith('https://localhost:443')
-		) {
-			event.preventDefault()
-			callback(true)
-		} else {
-			callback(false)
-		}
-	}
-)
 
 app.whenReady().then(() => {
 	createWindow()
