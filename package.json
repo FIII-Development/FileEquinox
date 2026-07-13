@@ -1,0 +1,45 @@
+{
+	"name": "file-equinox",
+	"version": "1.0.0",
+	"main": "main.js",
+	"bin": {
+		"file-equinox": "main.js"
+	},
+	"scripts": {
+		"build": "npx @yao-pkg/pkg . --targets node22-win-x64 --output FileEquinox.exe",
+		"start": "electron main.js",
+		"pack": "electron-builder --dir",
+		"dist": "electron-builder",
+		"format": "prettier . --write"
+	},
+	"build": {
+		"appId": "org.fiiidevelopment.fileequinox",
+		"mac": {
+			"category": "public.app-category.utilities"
+		},
+		"win": {
+			"target": [
+				"nsis",
+				"portable",
+				"msi"
+			],
+			"icon": "icons/favicon.ico"
+		}
+	},
+	"dependencies": {
+		"express": "^4.19.2",
+		"prettier": "^3.9.5"
+	},
+	"description": "File sharing solution",
+	"devDependencies": {
+		"electron": "^43.1.0",
+		"electron-builder": "^26.15.3"
+	},
+	"keywords": [],
+	"author": "Sprayman",
+	"license": "Unlicense",
+	"type": "commonjs",
+	"allowScripts": {
+		"electron-winstaller@5.4.0": true
+	}
+}

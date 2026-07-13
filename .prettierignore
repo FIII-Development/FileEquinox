@@ -1,0 +1,18 @@
+# Project-specific
+node_modules/
+certs/
+dist/
+download/
+icons/
+# OS-specific
+pixinfo/
+*.pixconf
+.DS_Store
+desktop.ini
+# Editor-specific
+.vscode/
+.vs/
+.idea/
+*.xcodeproj/xcuserdata/
+.metadata/
+.sublimetext/

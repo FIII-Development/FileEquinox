@@ -1,0 +1,55 @@
+# ==========================================
+# Project-Specific Assets & Artifacts
+# ==========================================
+node_modules/
+certs/
+dist/
+download/
+
+# ==========================================
+# Operating System (OS) Metadata Caches
+# ==========================================
+# macOS Finder layouts and thumbnail tracking
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows File Explorer desktop configurations & image previews
+[Dd]esktop.ini
+[Tt]humbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Pix / Specialized OS or device files
+pixinfo/
+*.pixconf
+
+# ==========================================
+# Code Editors, IDEs, and Workspaces
+# ==========================================
+# Visual Studio Code
+.vscode/
+
+# Visual Studio (Windows)
+.vs/
+
+# JetBrains IDEs (IntelliJ, WebStorm, PyCharm, etc.)
+.idea/
+
+# Xcode (macOS personal user state)
+**/xcuserdata/
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Eclipse
+.metadata/
+.project
+.classpath
+.settings/
+
+# Sublime Text
+.sublimetext/
+*.sublime-workspace
+*.sublime-project

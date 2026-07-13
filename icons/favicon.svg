@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="100%" height="100%">
+  <!-- Definition for the glow/gradients to ensure high contrast -->
+  <defs>
+    <linearGradient id="equinoxCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
+    </linearGradient>
+    <linearGradient id="equinoxPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2b1055" />
+      <stop offset="100%" stop-color="#7597de" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background "Day/Night" Split Sphere (The Equinox File) -->
+  <!-- Left Side: Dark/Night (The Core File Base) -->
+  <path d="M 16,4 A 12,12 0 0,0 16,28 L 16,4 Z" fill="url(#equinoxPurple)" />
+  
+  <!-- Right Side: Light/Day with stylized file corner fold -->
+  <path d="M 16,4 L 23,4 L 28,9 L 28,16 A 12,12 0 0,1 16,28 L 16,4 Z" fill="#ffffff" opacity="0.9" />
+  <!-- File Ear Fold -->
+  <path d="M 23,4 L 23,9 L 28,9 Z" fill="#d1d5db" />
+
+  <!-- The Sharing Orbit Rings (Simplified Atom Style) -->
+  <!-- Orbit 1: Tilted Left-to-Right (Thick for taskbar visibility) -->
+  <ellipse cx="16" cy="16" rx="14" ry="4" 
+           fill="none" 
+           stroke="url(#equinoxCyan)" 
+           stroke-width="2.5" 
+           transform="rotate(-30 16 16)" 
+           stroke-dasharray="22 8 22 8" />
+
+  <!-- Orbit 2: Tilted Right-to-Left (Slightly offset to show movement) -->
+  <ellipse cx="16" cy="16" rx="14" ry="4" 
+           fill="none" 
+           stroke="#00f2fe" 
+           stroke-width="2.5" 
+           transform="rotate(35 16 16)" 
+           stroke-dasharray="18 6 24 6" />
+
+  <!-- Central Core / Equinox Sun (Gives the atom/sharing focal point) -->
+  <circle cx="16" cy="16" r="3.5" fill="url(#equinoxCyan)" stroke="#2b1055" stroke-width="1.5" />
+</svg>

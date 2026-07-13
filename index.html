@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>FileEquinox Host Dashboard</title>
+		<link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+				font-family:
+					system-ui,
+					-apple-system,
+					sans-serif;
+				background: #121212;
+				color: white;
+			}
+			.header {
+				position: sticky;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				height: 60px;
+				padding: 0 20px;
+				background: #000000;
+				color: white;
+				border-bottom: 4px solid #ffa500;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+				position: sticky;
+				top: 0;
+				left: 0;
+				width: 100%;
+				box-sizing: border-box;
+				z-index: 1000;
+			}
+			.header-left,
+			.header-right {
+				display: flex;
+				align-items: center;
+				gap: 20px;
+			}
+			h2 {
+				margin: 0;
+				font-size: 1.2rem;
+				color: white;
+			}
+			.root-dir {
+				color: #aaaaaa;
+				font-size: 0.85rem;
+				background: #1e1e1e;
+				padding: 4px 8px;
+				border-radius: 4px;
+			}
+			.status {
+				font-weight: bold;
+				font-size: 0.9rem;
+			}
+			.status.active {
+				color: #4caf50;
+			}
+			.status.inactive {
+				color: #f44336;
+			}
+
+			.kill-switch {
+				background: #ffa500;
+				color: black;
+				border: none;
+				padding: 6px 12px;
+				font-weight: bold;
+				border-radius: 4px;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			.kill-switch:hover {
+				background: #e09200;
+			}
+
+			.container {
+				max-width: 90vw;
+				margin: 40px auto;
+				background: #000000;
+				padding: 25px;
+				border: 1px solid #ffa500;
+				border-radius: 8px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+			}
+			.userinfo {
+				color: white;
+				font-size: 0.95rem;
+				border-bottom: 1px solid #222;
+				padding-bottom: 15px;
+				margin-bottom: 20px;
+			}
+			.userinfo a {
+				color: #ffa500;
+				text-decoration: none;
+				font-weight: bold;
+			}
+
+			.dashboard-grid {
+				display: grid;
+				grid-template-columns: 1.2fr 0.8fr;
+				gap: 25px;
+			}
+			.left-column {
+				display: flex;
+				flex-direction: column;
+				gap: 25px;
+			}
+
+			.panel {
+				background: #161616;
+				border: 1px solid #262626;
+				border-radius: 6px;
+				padding: 20px;
+			}
+			.panel h3 {
+				margin-top: 0;
+				margin-bottom: 15px;
+				font-size: 1rem;
+				letter-spacing: 0.5px;
+				text-transform: uppercase;
+				color: #ffa500;
+				border-bottom: 1px solid #262626;
+				padding-bottom: 8px;
+			}
+
+			.transfer-item {
+				background: #1e1e1e;
+				padding: 12px;
+				border-radius: 6px;
+				margin-bottom: 12px;
+				border-left: 3px solid #ffa500;
+			}
+			.transfer-meta {
+				display: flex;
+				justify-content: space-between;
+				font-size: 0.85rem;
+				color: #ccc;
+				margin-bottom: 8px;
+			}
+			.progress-bar-bg {
+				background: #333;
+				height: 8px;
+				border-radius: 4px;
+				overflow: hidden;
+			}
+			.progress-bar-fill {
+				background: linear-gradient(90deg, #ffa500, #ffc04d);
+				height: 100%;
+				border-radius: 4px;
+				width: 0%;
+				transition: width 0.3s ease;
+			}
+
+			.settings-form {
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+			}
+			.form-group {
+				display: flex;
+				flex-direction: column;
+				gap: 6px;
+			}
+			.form-group label {
+				font-size: 0.85rem;
+				color: #aaaaaa;
+				font-weight: 600;
+			}
+			.form-group input {
+				background: #0a0a0a;
+				border: 1px solid #333;
+				color: #fff;
+				padding: 10px;
+				font-size: 0.9rem;
+				border-radius: 4px;
+				outline: none;
+			}
+			.form-group input:focus {
+				border-color: #ffa500;
+			}
+
+			.save-btn {
+				background: #1e1e1e;
+				color: #ffa500;
+				border: 1px solid #ffa500;
+				padding: 10px;
+				font-weight: bold;
+				border-radius: 4px;
+				cursor: pointer;
+				transition:
+					background 0.2s,
+					color 0.2s;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				font-size: 0.85rem;
+			}
+			.save-btn:hover {
+				background: #ffa500;
+				color: #000;
+			}
+
+			.log-console {
+				background: #0a0a0a;
+				font-family: monospace;
+				font-size: 0.85rem;
+				color: #4caf50;
+				padding: 12px;
+				border-radius: 4px;
+				height: 100%;
+				min-height: 400px;
+				overflow-y: auto;
+				border: 1px solid #1a1a1a;
+			}
+			.log-entry {
+				margin-bottom: 6px;
+				line-height: 1.4;
+			}
+			.log-time {
+				color: #888;
+			}
+			.empty-notice {
+				color: #666;
+				font-style: italic;
+				font-size: 0.9rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-left">
+				<h2>🚀 FileEquinox Host</h2>
+				<span class="root-dir" id="root-dir">📁 Loading path...</span>
+			</div>
+			<div class="header-right">
+				<div class="status active" id="status">🟢 Active</div>
+				<div id="connection-link">
+					🔗 Link:
+					<a
+						href="#"
+						id="link-anchor"
+						style="color: #ffa500; text-decoration: none"
+						>---</a
+					>
+				</div>
+				<div id="user-count">👥 Users: 0</div>
+				<button class="kill-switch" id="kill-btn">STOP SERVER</button>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="userinfo">
+				Sharing as <a id="user" href="#">Anita Intan</a>
+			</div>
+
+			<div class="dashboard-grid">
+				<div class="left-column">
+					<div class="panel">
+						<h3>📥 Active Client Transfers</h3>
+						<div id="transfers-container">
+							<div class="empty-notice">
+								No active file transfers.
+							</div>
+						</div>
+					</div>
+
+					<div class="panel">
+						<h3>⚙️ Host Server Configurations</h3>
+						<form class="settings-form" id="settings-form">
+							<div class="form-group">
+								<label for="server-port"
+									>Network Port Configuration</label
+								>
+								<input
+									type="number"
+									id="server-port"
+									required
+								/>
+							</div>
+							<div class="form-group">
+								<label for="shared-path"
+									>Shared Local Root Directory</label
+								>
+								<div style="display: flex; gap: 10px">
+									<input
+										type="text"
+										id="shared-path"
+										required
+										style="flex-grow: 1"
+									/>
+									<button
+										type="button"
+										id="browse-btn"
+										class="save-btn"
+										style="
+											margin: 0;
+											padding: 0 15px;
+											white-space: nowrap;
+										"
+									>
+										Browse...
+									</button>
+								</div>
+							</div>
+							<button
+								type="submit"
+								class="save-btn"
+								id="save-settings-btn"
+							>
+								Apply & Restart Server
+							</button>
+						</form>
+					</div>
+				</div>
+
+				<div class="panel">
+					<h3>📜 Live System Activity</h3>
+					<div class="log-console" id="log-console"></div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const killBtn = document.getElementById('kill-btn')
+			const statusDiv = document.getElementById('status')
+			const rootDirSpan = document.getElementById('root-dir')
+			const userCountDiv = document.getElementById('user-count')
+			const linkAnchor = document.getElementById('link-anchor')
+			const transfersContainer = document.getElementById(
+				'transfers-container'
+			)
+			const logConsole = document.getElementById('log-console')
+			const settingsForm = document.getElementById('settings-form')
+			const browseBtn = document.getElementById('browse-btn')
+
+			let eventSource = null
+
+			function appendLog(message, isSystem = false) {
+				const entry = document.createElement('div')
+				entry.className = 'log-entry'
+				const timeStr = new Date().toLocaleTimeString()
+
+				entry.innerHTML = `<span class="log-time">[${timeStr}]</span> ${isSystem ? '<span style="color: #ffa500">[SYSTEM]</span> ' : ''}${message}`
+				logConsole.appendChild(entry)
+				logConsole.scrollTop = logConsole.scrollHeight
+			}
+
+			async function loadServerConfig() {
+				try {
+					const res = await fetch('/api/host/config')
+					const data = await res.json()
+
+					document.getElementById('server-port').value = data.port
+					document.getElementById('shared-path').value =
+						data.sharedPath
+					rootDirSpan.textContent = `📁 Sharing: ${data.sharedPath}`
+
+					linkAnchor.textContent = `https://${window.location.hostname}:${data.port}`
+					linkAnchor.href = `https://${window.location.hostname}:${data.port}`
+
+					updateStatusUI(data.active)
+				} catch (err) {
+					appendLog(
+						'Failed to fetch server configuration settings.',
+						true
+					)
+				}
+			}
+
+			function updateStatusUI(active) {
+				if (!active) {
+					statusDiv.textContent = '🔴 Inactive'
+					statusDiv.className = 'status inactive'
+					killBtn.textContent = 'START SERVER'
+					killBtn.style.background = '#4caf50'
+				} else {
+					statusDiv.textContent = '🟢 Active'
+					statusDiv.className = 'status active'
+					killBtn.textContent = 'STOP SERVER'
+					killBtn.style.background = '#ffa500'
+				}
+			}
+
+			function establishEventStream() {
+				if (eventSource) eventSource.close()
+
+				eventSource = new EventSource('/api/host/stream')
+
+				eventSource.onmessage = (event) => {
+					const data = JSON.parse(event.data)
+
+					if (data.type === 'log') {
+						appendLog(data.message, data.system)
+					} else if (data.type === 'metrics') {
+						userCountDiv.textContent = `👥 Users: ${data.connections}`
+						renderTransfers(data.transfers)
+					}
+				}
+
+				eventSource.onerror = () => {
+					appendLog(
+						'Real-time data stream disconnected. Retrying...',
+						true
+					)
+					eventSource.close()
+				}
+			}
+
+			function renderTransfers(transfers) {
+				if (!transfers || transfers.length === 0) {
+					transfersContainer.innerHTML =
+						'<div class="empty-notice">No active file transfers.</div>'
+					return
+				}
+
+				transfersContainer.innerHTML = ''
+				transfers.forEach((t) => {
+					const item = document.createElement('div')
+					item.className = 'transfer-item'
+					item.innerHTML = `
+            <div class="transfer-meta">
+              <strong>🎬 ${t.filename}</strong>
+              <span>${t.ip} (${t.speed})</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width: ${t.progress}%"></div>
+            </div>
+          `
+					transfersContainer.appendChild(item)
+				})
+			}
+
+			killBtn.addEventListener('click', async () => {
+				try {
+					const res = await fetch('/api/host/toggle', {
+						method: 'POST',
+					})
+					const data = await res.json()
+					updateStatusUI(data.active)
+				} catch (err) {
+					appendLog('Error toggling the server runtime state.', true)
+				}
+			})
+
+			linkAnchor.addEventListener('click', (e) => {
+				e.preventDefault()
+
+				const targetUrl = linkAnchor.href
+
+				if (window.electronAPI && window.electronAPI.openExternal) {
+					window.electronAPI.openExternal(targetUrl)
+				} else {
+					window.open(targetUrl, '_blank')
+				}
+			})
+
+			settingsForm.addEventListener('submit', async (e) => {
+				e.preventDefault()
+				const body = {
+					port: parseInt(
+						document.getElementById('server-port').value
+					),
+					sharedPath: document.getElementById('shared-path').value,
+				}
+
+				try {
+					const res = await fetch('/api/host/config', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(body),
+					})
+
+					if (res.ok) {
+						appendLog(
+							'Configuration updated successfully! Re-initializing system...',
+							true
+						)
+						setTimeout(() => {
+							loadServerConfig()
+							establishEventStream()
+						}, 1000)
+					} else {
+						appendLog(
+							'Server rejected configuration adjustments.',
+							true
+						)
+					}
+				} catch (err) {
+					appendLog(
+						'Error updating target configuration values.',
+						true
+					)
+				}
+			})
+
+			browseBtn.addEventListener('click', async () => {
+				if (window.electronAPI && window.electronAPI.selectFolder) {
+					try {
+						const folderPath =
+							await window.electronAPI.selectFolder()
+						if (folderPath) {
+							document.getElementById('shared-path').value =
+								folderPath
+						}
+					} catch (err) {
+						appendLog(
+							'Failed to resolve native directory path.',
+							true
+						)
+					}
+				} else {
+					appendLog(
+						'Folder browser dialog requires the native Electron desktop application wrapper layer.',
+						true
+					)
+				}
+			})
+
+			document.addEventListener('DOMContentLoaded', () => {
+				loadServerConfig()
+				establishEventStream()
+			})
+		</script>
+	</body>
+</html>
