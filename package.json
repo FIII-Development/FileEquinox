@@ -24,6 +24,13 @@
 				"msi"
 			],
 			"icon": "icons/favicon.ico"
+		},
+		"linux": {
+			"target": [
+				"AppImage",
+				"snap",
+				"deb"
+			]
 		}
 	},
 	"dependencies": {
