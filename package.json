@@ -43,7 +43,7 @@
 		"electron-builder": "^26.15.3"
 	},
 	"keywords": [],
-	"author": "Sprayman",
+	"author": "Sprayman <sprayman1234555@gmail.com>",
 	"license": "Unlicense",
 	"type": "commonjs",
 	"allowScripts": {
