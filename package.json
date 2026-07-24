@@ -2,6 +2,7 @@
 	"name": "file-equinox",
 	"version": "1.0.0",
 	"main": "main.js",
+	"productName": "File Equinox",
 	"bin": {
 		"file-equinox": "main.js"
 	},
