@@ -45,7 +45,7 @@
 	},
 	"keywords": [],
 	"author": "Sprayman <sprayman1234555@gmail.com>",
-	"license": "Unlicense",
+	"license": "MIT",
 	"type": "commonjs",
 	"allowScripts": {
 		"electron-winstaller@5.4.0": true
