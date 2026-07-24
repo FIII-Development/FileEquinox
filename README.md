@@ -1,6 +1,6 @@
 # FileEquinox
 
-FileEquinox is a small Electron-based file sharing app that hosts a local dashboard and serves a public download page over HTTPS.
+FileEquinox is a small Electron-based file sharing app that hosts a local dashboard and serves a public download page over HTTP.
 
 ## Features
 
