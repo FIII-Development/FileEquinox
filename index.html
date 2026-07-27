@@ -202,6 +202,27 @@
 				background: #ffa500;
 				color: #000;
 			}
+			.save-btn:disabled {
+				opacity: 0.6;
+				cursor: wait;
+			}
+			.tunnel-row {
+				display: flex;
+				gap: 10px;
+				align-items: center;
+				min-width: 0;
+			}
+			.tunnel-url {
+				color: #aaa;
+				font-size: 0.9rem;
+				min-width: 0;
+				overflow-wrap: anywhere;
+				text-decoration: none;
+			}
+			.tunnel-url.active {
+				color: #ffa500;
+				font-weight: bold;
+			}
 
 			.log-console {
 				background: #0a0a0a;
@@ -313,6 +334,24 @@
 								Apply & Restart Server
 							</button>
 						</form>
+
+						<div class="form-group" style="margin-top: 15px">
+							<label for="tunnel-toggle"
+								>Public Share Tunnel</label
+							>
+							<div class="tunnel-row">
+								<button
+									type="button"
+									id="tunnel-toggle"
+									class="save-btn"
+								>
+									Enable Tunnel
+								</button>
+								<a href="#" id="tunnel-url" class="tunnel-url"
+									>No public link yet</a
+								>
+							</div>
+						</div>
 					</div>
 				</div>
 
@@ -335,17 +374,73 @@
 			const logConsole = document.getElementById('log-console')
 			const settingsForm = document.getElementById('settings-form')
 			const browseBtn = document.getElementById('browse-btn')
+			const tunnelToggleBtn = document.getElementById('tunnel-toggle')
+			const tunnelUrlSpan = document.getElementById('tunnel-url')
 
 			let eventSource = null
+			let currentTunnelUrl = null
+			let isTunnelEnabled = false
 
 			function appendLog(message, isSystem = false) {
 				const entry = document.createElement('div')
 				entry.className = 'log-entry'
 				const timeStr = new Date().toLocaleTimeString()
 
-				entry.innerHTML = `<span class="log-time">[${timeStr}]</span> ${isSystem ? '<span style="color: #ffa500">[SYSTEM]</span> ' : ''}${message}`
+				const time = document.createElement('span')
+				time.className = 'log-time'
+				time.textContent = `[${timeStr}]`
+				entry.appendChild(time)
+				entry.appendChild(document.createTextNode(' '))
+
+				if (isSystem) {
+					const system = document.createElement('span')
+					system.style.color = '#ffa500'
+					system.textContent = '[SYSTEM] '
+					entry.appendChild(system)
+				}
+
+				entry.appendChild(document.createTextNode(message))
 				logConsole.appendChild(entry)
 				logConsole.scrollTop = logConsole.scrollHeight
+			}
+
+			function openExternalUrl(targetUrl) {
+				if (window.electronAPI && window.electronAPI.openExternal) {
+					window.electronAPI.openExternal(targetUrl)
+				} else {
+					window.open(targetUrl, '_blank')
+				}
+			}
+
+			function setTunnelUI(
+				{ tunnelActive, tunnelUrl },
+				isPending = false
+			) {
+				currentTunnelUrl = tunnelUrl || null
+				isTunnelEnabled = Boolean(tunnelActive && currentTunnelUrl)
+
+				tunnelUrlSpan.textContent =
+					currentTunnelUrl || 'No public link yet'
+				tunnelUrlSpan.href = currentTunnelUrl || '#'
+				tunnelUrlSpan.classList.toggle(
+					'active',
+					Boolean(currentTunnelUrl)
+				)
+				tunnelUrlSpan.setAttribute(
+					'aria-disabled',
+					currentTunnelUrl ? 'false' : 'true'
+				)
+
+				tunnelToggleBtn.disabled = isPending
+				if (isPending) {
+					tunnelToggleBtn.textContent = isTunnelEnabled
+						? 'Stopping...'
+						: 'Starting...'
+				} else {
+					tunnelToggleBtn.textContent = isTunnelEnabled
+						? 'Disable Tunnel'
+						: 'Enable Tunnel'
+				}
 			}
 
 			async function loadServerConfig() {
@@ -360,6 +455,8 @@
 
 					linkAnchor.textContent = `http://${window.location.hostname}:${data.port}`
 					linkAnchor.href = `http://${window.location.hostname}:${data.port}`
+
+					setTunnelUI(data)
 
 					updateStatusUI(data.active)
 				} catch (err) {
@@ -397,6 +494,8 @@
 					} else if (data.type === 'metrics') {
 						userCountDiv.textContent = `👥 Users: ${data.connections}`
 						renderTransfers(data.transfers)
+					} else if (data.type === 'tunnel') {
+						setTunnelUI(data)
 					}
 				}
 
@@ -420,15 +519,28 @@
 				transfers.forEach((t) => {
 					const item = document.createElement('div')
 					item.className = 'transfer-item'
-					item.innerHTML = `
-            <div class="transfer-meta">
-              <strong>🎬 ${t.filename}</strong>
-              <span>${t.ip} (${t.speed})</span>
-            </div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" style="width: ${t.progress}%"></div>
-            </div>
-          `
+
+					const meta = document.createElement('div')
+					meta.className = 'transfer-meta'
+
+					const filename = document.createElement('strong')
+					filename.textContent = t.filename
+
+					const details = document.createElement('span')
+					details.textContent = `${t.ip} (${t.speed})`
+
+					const progressBg = document.createElement('div')
+					progressBg.className = 'progress-bar-bg'
+
+					const progressFill = document.createElement('div')
+					progressFill.className = 'progress-bar-fill'
+					progressFill.style.width = `${t.progress}%`
+
+					meta.appendChild(filename)
+					meta.appendChild(details)
+					progressBg.appendChild(progressFill)
+					item.appendChild(meta)
+					item.appendChild(progressBg)
 					transfersContainer.appendChild(item)
 				})
 			}
@@ -449,12 +561,14 @@
 				e.preventDefault()
 
 				const targetUrl = linkAnchor.href
+				openExternalUrl(targetUrl)
+			})
 
-				if (window.electronAPI && window.electronAPI.openExternal) {
-					window.electronAPI.openExternal(targetUrl)
-				} else {
-					window.open(targetUrl, '_blank')
-				}
+			tunnelUrlSpan.addEventListener('click', (e) => {
+				e.preventDefault()
+
+				if (!currentTunnelUrl) return
+				openExternalUrl(currentTunnelUrl)
 			})
 
 			settingsForm.addEventListener('submit', async (e) => {
@@ -472,8 +586,10 @@
 						headers: { 'Content-Type': 'application/json' },
 						body: JSON.stringify(body),
 					})
+					const data = await res.json()
 
 					if (res.ok) {
+						setTunnelUI(data)
 						appendLog(
 							'Configuration updated successfully! Re-initializing system...',
 							true
@@ -484,7 +600,8 @@
 						}, 1000)
 					} else {
 						appendLog(
-							'Server rejected configuration adjustments.',
+							data.error ||
+								'Server rejected configuration adjustments.',
 							true
 						)
 					}
@@ -516,6 +633,45 @@
 						'Folder browser dialog requires the native Electron desktop application wrapper layer.',
 						true
 					)
+				}
+			})
+
+			tunnelToggleBtn.addEventListener('click', async () => {
+				const enabled = !isTunnelEnabled
+				setTunnelUI(
+					{
+						tunnelActive: isTunnelEnabled,
+						tunnelUrl: currentTunnelUrl,
+					},
+					true
+				)
+
+				try {
+					const res = await fetch('/api/host/tunnel', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ enabled }),
+					})
+					const data = await res.json()
+
+					if (!res.ok || !data.success) {
+						throw new Error(data.error || 'Tunnel toggle failed.')
+					}
+
+					setTunnelUI(data)
+					appendLog(
+						data.tunnelUrl
+							? `Tunnel enabled: ${data.tunnelUrl}`
+							: 'Tunnel disabled.',
+						true
+					)
+				} catch (err) {
+					appendLog(err.message || 'Failed to toggle tunnel.', true)
+					setTunnelUI({
+						tunnelActive: isTunnelEnabled,
+						tunnelUrl: currentTunnelUrl,
+					})
+					loadServerConfig()
 				}
 			})
 

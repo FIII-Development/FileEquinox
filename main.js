@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
 const path = require('path')
 
-const { stopAllServers } = require('./index.js')
+const { stopAllServers, serverReady, getHostUrl } = require('./index.js')
 
 let mainWindow
 
@@ -19,15 +19,16 @@ function createWindow() {
 		},
 	})
 
-	const targetUrl = 'http://localhost:8443'
-
-	function loadDashboard() {
-		mainWindow.loadURL(targetUrl).catch((err) => {
+	async function loadDashboard() {
+		try {
+			await serverReady
+			await mainWindow.loadURL(getHostUrl())
+		} catch (err) {
 			console.log(
 				'⏳ Express backend is still warming up... retrying in 500ms'
 			)
 			setTimeout(loadDashboard, 500)
-		})
+		}
 	}
 
 	loadDashboard()
