@@ -5,9 +5,10 @@ FileEquinox is a small Electron-based file sharing app that hosts a local dashbo
 ## Features
 
 - Electron desktop app wrapper
-- HTTPS host dashboard for configuration and transfer monitoring
+- HTTP host dashboard for configuration and transfer monitoring
 - Public file-sharing page for clients
 - Simple local folder sharing workflow
+- Public link
 
 ## Requirements
 
@@ -40,12 +41,11 @@ npm run format
 
 ## Notes
 
-- The app expects the SSL certificate files named `cert.pem` and `key.pem` in the project root.
-- The default host dashboard is served on port `8443` and the public share interface uses port `443` unless changed from the dashboard.
+- The default host dashboard is served on port `8443` and the public share interface uses port `80` unless changed from the dashboard.
 
 ## License
 
-This project is licensed under the Unlicense. See [License.md](License.md) for details.
+This project is licensed under the MIT. See [License.md](License.md) for details.
 
 ## Project History
 
