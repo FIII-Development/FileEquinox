@@ -5,6 +5,7 @@ node_modules/
 certs/
 dist/
 download/
+build/debug-project.wxs
 
 # ==========================================
 # Operating System (OS) Metadata Caches

@@ -45,8 +45,10 @@
 	},
 	"description": "File sharing solution",
 	"devDependencies": {
+		"@semantic-release/git": "^10.0.1",
 		"electron": "^43.1.0",
-		"electron-builder": "^26.15.3"
+		"electron-builder": "^26.15.3",
+		"semantic-release": "^25.0.8"
 	},
 	"keywords": [],
 	"author": "Sprayman <sprayman1234555@gmail.com>",
