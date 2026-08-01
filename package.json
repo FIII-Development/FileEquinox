@@ -1,6 +1,6 @@
 {
 	"name": "file-equinox",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "main.js",
 	"productName": "File Equinox",
 	"bin": {
@@ -32,7 +32,11 @@
 				"snap",
 				"deb"
 			]
-		}
+		},
+		"nsis": {
+			"include": "build/installer.nsh"
+		},
+		"msiProjectCreated": "./build/msi-hook.js"
 	},
 	"dependencies": {
 		"express": "^4.19.2",
