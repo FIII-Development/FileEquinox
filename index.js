@@ -714,4 +714,18 @@ async function stopAllServers() {
 	}
 }
 
-module.exports = { stopAllServers, serverReady, getHostUrl }
+function setSharedPath(newPath) {
+	sharedPath = path.resolve(newPath)
+}
+
+function getSharedPath() {
+	return sharedPath
+}
+
+module.exports = {
+	stopAllServers,
+	serverReady,
+	getHostUrl,
+	setSharedPath,
+	getSharedPath,
+}
