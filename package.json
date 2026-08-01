@@ -34,7 +34,8 @@
 			]
 		},
 		"nsis": {
-			"include": "build/installer.nsh"
+			"oneClick": "false",
+			"allowToChangeInstallationDirectory": "true"
 		},
 		"msiProjectCreated": "./build/msi-hook.js"
 	},
