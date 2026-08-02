@@ -36,13 +36,29 @@ jobs:
                   # Necessary for GitHub API interactions if you automate releases later
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Upload Build Artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  name: ${{ runner.os }}-builds
-                  path: |
-                      dist/*.exe
-                      dist/*.msi
-                      dist/*.AppImage
-                      dist/*.snap
-                      dist/*.deb
+            - name: Upload Release Assets
+              if: github.event.workflow_run.conclusion == 'success'
+              shell: bash
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  TAG="$(gh release list --limit 1 --json tagName --jq '.[0].tagName')"
+
+                  echo "Uploading assets to release: $TAG"
+
+                  shopt -s nullglob
+
+                  files=(
+                    dist/*.exe
+                    dist/*.msi
+                    dist/*.AppImage
+                    dist/*.snap
+                    dist/*.deb
+                  )
+
+                  if [ ${#files[@]} -eq 0 ]; then
+                    echo "No release assets found."
+                    exit 1
+                  fi
+
+                  gh release upload "$TAG" "${files[@]}" --clobber
