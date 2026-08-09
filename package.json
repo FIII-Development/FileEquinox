@@ -1,14 +1,14 @@
 {
 	"name": "file-equinox",
 	"version": "1.1.0",
-	"main": "main.js",
+	"main": "src/electron/main.js",
 	"productName": "File Equinox",
 	"bin": {
 		"file-equinox": "main.js"
 	},
 	"scripts": {
 		"build": "npx @yao-pkg/pkg . --targets node22-win-x64 --output FileEquinox.exe",
-		"start": "electron main.js",
+		"start": "electron .",
 		"pack": "electron-builder --dir",
 		"dist": "electron-builder",
 		"format": "prettier . --write"

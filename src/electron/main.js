@@ -7,7 +7,7 @@ const {
 	serverReady,
 	getHostUrl,
 	setSharedPath,
-} = require('./index.js')
+} = require('../../index.js')
 
 const launchDirectory = process.argv
 	.slice(1)
