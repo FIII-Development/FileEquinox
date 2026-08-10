@@ -4,7 +4,24 @@ const path = require('path')
 const http = require('http')
 const localtunnel = require('localtunnel')
 
+const senderPath = path.join(__dirname, '../web/sender/')
+const receiverPath = path.join(__dirname, '../web/receiver/')
+
 const app = express()
+
+// Dynamic static routing based on the local port context
+app.use('/assets', (req, res, next) => {
+	const incomingPort = req.socket.localPort
+	const targetDir = incomingPort === HOST_PORT ? senderPath : receiverPath
+	express.static(path.join(targetDir, 'assets'))(req, res, next)
+})
+
+app.use('/logic', (req, res, next) => {
+	const incomingPort = req.socket.localPort
+	const targetDir = incomingPort === HOST_PORT ? senderPath : receiverPath
+	express.static(path.join(targetDir, 'logic'))(req, res, next)
+})
+
 app.use(express.json())
 
 let HOST_PORT = 8443
@@ -379,9 +396,9 @@ app.get('/', (req, res) => {
 	const incomingPort = req.socket.localPort
 
 	if (incomingPort === HOST_PORT) {
-		return res.sendFile(path.join(__dirname, 'index.html'))
+		return res.sendFile(path.join(senderPath, 'index.html'))
 	} else if (incomingPort === USER_PORT) {
-		return res.sendFile(path.join(__dirname, 'host.html'))
+		return res.sendFile(path.join(receiverPath, 'index.html'))
 	}
 
 	res.status(404).send('Not Found')
