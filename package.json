@@ -46,10 +46,12 @@
 	},
 	"description": "File sharing solution",
 	"devDependencies": {
+		"@eslint/js": "^10.0.1",
 		"@semantic-release/changelog": "^6.0.3",
 		"@semantic-release/git": "^10.0.1",
 		"electron": "^43.1.0",
 		"electron-builder": "^26.15.3",
+		"globals": "^17.9.0",
 		"semantic-release": "^25.0.8"
 	},
 	"keywords": [],
