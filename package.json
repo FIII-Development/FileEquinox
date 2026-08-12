@@ -1,6 +1,6 @@
 {
 	"name": "file-equinox",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"main": "src/electron/main.js",
 	"productName": "File Equinox",
 	"bin": {

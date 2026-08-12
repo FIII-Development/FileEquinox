@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/FIII-Development/FileEquinox/compare/v1.1.0...v1.1.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* resolve duplicate event listener binding logic on page load ([2cec47c](https://github.com/FIII-Development/FileEquinox/commit/2cec47c09dea22213e88b5aaa526a6865fd4e7d9)), closes [#5](https://github.com/FIII-Development/FileEquinox/issues/5)
+
 # [1.1.0](https://github.com/FIII-Development/FileEquinox/compare/v1.0.0...v1.1.0) (2026-08-02)
 
 
