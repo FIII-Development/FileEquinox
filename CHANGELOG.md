@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/FIII-Development/FileEquinox/compare/v1.1.1...v1.2.0) (2026-08-17)
+
+
+### Features
+
+* **explorer:** implement dynamic file tree rendering and modern UI ([08279ac](https://github.com/FIII-Development/FileEquinox/commit/08279accece4db5fb64dd8131b297a35f01fc20f))
+
 ## [1.1.1](https://github.com/FIII-Development/FileEquinox/compare/v1.1.0...v1.1.1) (2026-08-12)
 
 
