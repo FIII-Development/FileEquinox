@@ -7,7 +7,7 @@ const {
 	serverReady,
 	getHostUrl,
 	setSharedPath,
-} = require('../backend/index.js')
+} = require('../backend/p2p/index.js')
 
 const launchDirectory = process.argv
 	.slice(1)
