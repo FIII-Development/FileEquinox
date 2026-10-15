@@ -48,7 +48,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@semantic-release/changelog": "^5.0.1",
-		"@semantic-release/git": "^5.0.1",
+		"@semantic-release/git": "^2.0",
 		"electron": "^43.1.0",
 		"electron-builder": "^26.5.0",
 		"globals": "^17.9.0",
