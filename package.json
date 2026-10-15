@@ -41,16 +41,16 @@
 	},
 	"dependencies": {
 		"express": "^4.19.2",
-		"localtunnel": "^2.0.2",
+		"localtunnel": "^1.8.3",
 		"prettier": "^3.9.5"
 	},
 	"description": "File sharing solution",
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
-		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/changelog": "^5.0.1",
 		"@semantic-release/git": "^10.0.1",
 		"electron": "^43.1.0",
-		"electron-builder": "^26.15.3",
+		"electron-builder": "^26.5.0",
 		"globals": "^17.9.0",
 		"semantic-release": "^25.0.8"
 	},
