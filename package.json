@@ -52,7 +52,7 @@
 		"electron": "^43.1.0",
 		"electron-builder": "^26.5.0",
 		"globals": "^17.9.0",
-		"semantic-release": "^5.0.1"
+		"semantic-release": "^17.0.0"
 	},
 	"keywords": [],
 	"author": "Sprayman <sprayman1234555@gmail.com>",
