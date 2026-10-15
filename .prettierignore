@@ -16,3 +16,5 @@ desktop.ini
 *.xcodeproj/xcuserdata/
 .metadata/
 .sublimetext/
+# Package-specific
+CHANGELOG.md
