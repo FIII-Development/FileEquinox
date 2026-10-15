@@ -28,8 +28,11 @@ class ServerManager {
 			const server = http.createServer()
 
 			server.once('error', (err) => {
-				if (err.code === 'EADDRINUSE') {
-					const nextPort = startingPort + 1
+				if (err.code === 'EADDRINUSE' || err.code === 'EACCES') {
+					const nextPort =
+						err.code === 'EACCES' && startingPort < 1024
+							? 1024
+							: startingPort + 1
 
 					if (nextPort > 65535) {
 						reject(
