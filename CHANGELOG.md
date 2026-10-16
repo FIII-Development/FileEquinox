@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/FIII-Development/FileEquinox/compare/v1.2.0...v1.2.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* App won't run in Debian based linux ([8cc423d](https://github.com/FIII-Development/FileEquinox/commit/8cc423d3032cf6fe871c4c8aac9450afda324e8d)), closes [#6](https://github.com/FIII-Development/FileEquinox/issues/6)
+* **deps:** force upgrade dependencies to fix vulnerabilities ([2e66ae6](https://github.com/FIII-Development/FileEquinox/commit/2e66ae62ed14c9e5227d2c395d07cd9cb65dca2a))
+
 # [1.2.0](https://github.com/FIII-Development/FileEquinox/compare/v1.1.1...v1.2.0) (2026-08-17)
 
 
